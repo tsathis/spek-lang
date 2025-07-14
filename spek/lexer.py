@@ -9,6 +9,9 @@ class TokenType(Enum):
     LPAREN = auto()
     RPAREN = auto()
     COMMA = auto()
+    ARROW = auto()
+    PIPE = auto()
+    BANG = auto()
     NEWLINE = auto()
     EOF = auto()
 
@@ -50,13 +53,22 @@ class Lexer:
             elif c == ",":
                 tokens.append(Token(TokenType.COMMA, ",", self.line))
                 self.pos += 1
+            elif c == "-":
+                # assume arrow, not handling minus for now
+                tokens.append(Token(TokenType.ARROW, "->", self.line))
+                self.pos += 2
+            elif c == "|":
+                tokens.append(Token(TokenType.PIPE, "|", self.line))
+                self.pos += 1
+            elif c == "!":
+                tokens.append(Token(TokenType.BANG, "!", self.line))
+                self.pos += 1
             elif c.isalpha() or c == "_":
                 start = self.pos
                 while self.peek() and (self.peek().isalnum() or self.peek() == "_"):
                     self.pos += 1
                 tokens.append(Token(TokenType.IDENT, self.text[start:self.pos], self.line))
             else:
-                # dunno what this is yet, skip for now
                 self.pos += 1
         tokens.append(Token(TokenType.EOF, "", self.line))
         return tokens
