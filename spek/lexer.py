@@ -12,6 +12,8 @@ class TokenType(Enum):
     ARROW = auto()
     PIPE = auto()
     BANG = auto()
+    QUESTION = auto()
+    COLON = auto()
     NEWLINE = auto()
     EOF = auto()
 
@@ -62,6 +64,12 @@ class Lexer:
                 self.pos += 1
             elif c == "!":
                 tokens.append(Token(TokenType.BANG, "!", self.line))
+                self.pos += 1
+            elif c == "?":
+                tokens.append(Token(TokenType.QUESTION, "?", self.line))
+                self.pos += 1
+            elif c == ":":
+                tokens.append(Token(TokenType.COLON, ":", self.line))
                 self.pos += 1
             elif c.isalpha() or c == "_":
                 start = self.pos
