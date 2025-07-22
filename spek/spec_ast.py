@@ -19,10 +19,30 @@ class Example:
 
 
 @dataclass
+class Effect:
+    name: str
+    line: int
+
+
+@dataclass
+class Hatch:
+    text: str
+    line: int
+
+
+@dataclass
+class Note:
+    text: str
+    line: int
+
+
+@dataclass
 class Spec:
     sig: Signature
     examples: list = field(default_factory=list)
     effects: list = field(default_factory=list)
+    hatches: list = field(default_factory=list)
+    notes: list = field(default_factory=list)
 
 
 @dataclass
