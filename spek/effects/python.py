@@ -27,6 +27,6 @@ class EffectChecker(ast.NodeVisitor):
                 self.effects.add("db")
             if attr in ("open", "read", "write"):
                 self.effects.add("fs")
-            if attr in ("sha256", "md5", "hexdigest"):
+            if attr in ("sha256", "md5", "hexdigest", "new"):
                 self.effects.add("hash")
         self.generic_visit(node)
