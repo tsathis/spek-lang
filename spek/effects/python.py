@@ -1,7 +1,7 @@
 """Static effect analysis for Python implementations.
 
 Walks the AST looking for calls that look like they touch the network,
-db, filesystem etc. Very rough first pass, only catches requests.get for now.
+db, filesystem, hashing etc.
 """
 
 import ast
@@ -20,6 +20,13 @@ class EffectChecker(ast.NodeVisitor):
 
     def visit_Call(self, node):
         if isinstance(node.func, ast.Attribute):
-            if node.func.attr == "get":
+            attr = node.func.attr
+            if attr in ("get", "post", "put", "delete"):
                 self.effects.add("net")
+            if attr in ("execute", "query"):
+                self.effects.add("db")
+            if attr in ("open", "read", "write"):
+                self.effects.add("fs")
+            if attr in ("sha256", "md5", "hexdigest"):
+                self.effects.add("hash")
         self.generic_visit(node)
