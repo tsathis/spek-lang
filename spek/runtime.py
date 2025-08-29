@@ -1,4 +1,4 @@
-"""Runtime support: fixtures and target loading."""
+"""Runtime support: fixtures, target loading, outcome classification."""
 
 import importlib
 
@@ -19,3 +19,9 @@ class Target:
     def load(self):
         module = importlib.import_module(self.module_name)
         return getattr(module, self.func_name)
+
+
+def classify_outcome(func, args, outcomes):
+    # first outcome is success, rest map to exception class names
+    result = func(*args)
+    return outcomes[0], result
