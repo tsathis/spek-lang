@@ -22,6 +22,13 @@ class Target:
 
 
 def classify_outcome(func, args, outcomes):
-    # first outcome is success, rest map to exception class names
-    result = func(*args)
-    return outcomes[0], result
+    """First outcome is success. Others map to an exception whose class
+    name (lowercased) matches the outcome name."""
+    try:
+        result = func(*args)
+        return outcomes[0], result
+    except Exception as e:
+        name = type(e).__name__.lower()
+        if name in [o.lower() for o in outcomes]:
+            return name, None
+        raise
