@@ -12,7 +12,7 @@ class Loop:
 
     def run(self):
         from spek.prompt import PromptGenerator
-        for round_num in range(self.max_rounds + 1):
+        for round_num in range(self.max_rounds):
             prompt = PromptGenerator(self.spec).generation_prompt()
             result = subprocess.run(self.agent_cmd, input=prompt, capture_output=True, text=True, shell=True)
             if result.returncode != 0:
