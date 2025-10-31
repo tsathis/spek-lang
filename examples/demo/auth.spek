@@ -1,0 +1,6 @@
+login(email, password) -> session | wrong | locked
+  !db !hash
+  (known, right) session
+  (known, wrong) wrong
+  (unknown, any) wrong
+  (locked_acct, right) locked

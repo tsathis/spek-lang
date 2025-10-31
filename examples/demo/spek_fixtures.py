@@ -1,0 +1,6 @@
+known = "alice@example.com"
+unknown = "bob@example.com"
+right = "correct_password"
+wrong = "incorrect_password"
+locked_acct = "locked@example.com"
+any = "anything"
