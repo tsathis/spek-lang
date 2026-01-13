@@ -21,6 +21,10 @@ class PythonCodegen:
             pass
         lines.append("")
         outcomes = self.spec.sig.outcomes
+        for h in self.spec.hatches:
+            lines.append(f"# hatch: {h.text}")
+        if self.spec.hatches:
+            lines.append("")
         for i, ex in enumerate(self.spec.examples):
             args = ", ".join(f"fx.{a}" for a in ex.inputs)
             lines.append(f"def test_case_{i}():")
