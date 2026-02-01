@@ -1,0 +1,3 @@
+parse_date(text) -> date | invalid
+  (good) date
+  (bad) invalid

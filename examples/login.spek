@@ -1,0 +1,5 @@
+login(email, password) -> ok | wrong
+  !db !hash
+  (known, right) ok
+  (known, bad) wrong
+  (unknown, any) wrong
