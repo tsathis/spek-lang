@@ -1,0 +1,4 @@
+fetch_user(id) -> user | not_found
+  !net
+  (existing) user
+  (missing) not_found

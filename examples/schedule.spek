@@ -1,0 +1,2 @@
+next_run(cron, now) -> when
+  (daily, t1) when

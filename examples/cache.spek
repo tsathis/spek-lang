@@ -1,0 +1,4 @@
+get_cached(key) -> hit | miss
+  !mem
+  (present) hit
+  (absent) miss
