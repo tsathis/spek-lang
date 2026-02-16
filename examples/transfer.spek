@@ -1,0 +1,4 @@
+transfer(src, dst, amount) -> ok | insufficient
+  !db
+  (funded, small) ok
+  (empty, small) insufficient

@@ -1,0 +1,4 @@
+process_csv(path) -> rows | invalid
+  !fs
+  (good_file) rows
+  (bad_file) invalid
