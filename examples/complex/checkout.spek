@@ -1,0 +1,6 @@
+checkout(cart, payment) -> receipt | declined | empty_cart
+  !db !net
+  (full_cart, good_card) receipt
+  (full_cart, bad_card) declined
+  (empty, good_card) empty_cart
+  ? charge and order creation must be atomic

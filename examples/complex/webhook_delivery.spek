@@ -1,0 +1,5 @@
+deliver(event, endpoint) -> delivered | failed
+  !net
+  (valid_event, up_endpoint) delivered
+  (valid_event, down_endpoint) failed
+  ? retries with backoff on failure
