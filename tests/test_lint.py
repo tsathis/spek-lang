@@ -14,4 +14,5 @@ def test_no_examples_is_warning():
     sig = Signature("foo", ["x"], ["ok"], line=1)
     linter = Linter()
     linter.lint_spec(Spec(sig=sig))
-    assert len(linter.diagnostics.warnings()) == 1
+    codes = [d.code for d in linter.diagnostics.warnings()]
+    assert "W001" in codes

@@ -1,5 +1,5 @@
 login(email, password) -> session | wrong | locked
-  !db !hash
+  !hash
   (known, right) session
   (known, wrong) wrong
   (unknown, any) wrong
