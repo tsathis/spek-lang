@@ -31,3 +31,7 @@ class Verifier:
             diagnostics.add(Diagnostic(
                 "E101", f"undeclared effect: {eff}", spec.sig.line, Severity.ERROR, spec.sig.name
             ))
+        for eff in declared - found:
+            diagnostics.add(Diagnostic(
+                "E103", f"declared effect never performed: {eff}", spec.sig.line, Severity.ERROR, spec.sig.name
+            ))
