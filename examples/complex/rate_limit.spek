@@ -1,0 +1,4 @@
+allow(client_id, now) -> allowed | limited
+  !mem
+  (fresh_client, t1) allowed
+  (over_limit, t1) limited
