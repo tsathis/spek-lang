@@ -1,0 +1,5 @@
+transfer(from_acct, to_acct, amount) -> ok | insufficient
+  !db
+  (funded, dest, small) ok
+  (empty, dest, small) insufficient
+  ? double entry invariant, debits must equal credits

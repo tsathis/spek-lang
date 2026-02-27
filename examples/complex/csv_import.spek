@@ -1,0 +1,5 @@
+import_rows(path) -> imported | invalid_row
+  !fs !db
+  (clean_csv) imported
+  (bad_csv) invalid_row
+  ? partial imports must roll back
