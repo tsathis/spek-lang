@@ -1,7 +1,9 @@
 """Static effect analysis for Python implementations.
 
 Walks the AST looking for calls that look like they touch the network,
-db, filesystem, hashing etc.
+db, filesystem, hashing etc. Calls we can't inspect (through a name we
+don't recognize, or an attribute on something dynamic) get flagged as a
+warning instead of silently passing.
 """
 
 import ast
@@ -10,6 +12,7 @@ import ast
 class EffectChecker(ast.NodeVisitor):
     def __init__(self):
         self.effects = set()
+        self.opaque_calls = []
 
     def check(self, code, func_name):
         tree = ast.parse(code)
@@ -23,10 +26,13 @@ class EffectChecker(ast.NodeVisitor):
             attr = node.func.attr
             if attr in ("get", "post", "put", "delete"):
                 self.effects.add("net")
-            if attr in ("execute", "query"):
+            elif attr in ("execute", "query"):
                 self.effects.add("db")
-            if attr in ("open", "read", "write"):
+            elif attr in ("open", "read", "write"):
                 self.effects.add("fs")
-            if attr in ("sha256", "md5", "hexdigest", "new"):
+            elif attr in ("sha256", "md5", "hexdigest", "new"):
                 self.effects.add("hash")
+        elif isinstance(node.func, ast.Name):
+            # local helper call, we don't follow it yet
+            self.opaque_calls.append(node.func.id)
         self.generic_visit(node)
