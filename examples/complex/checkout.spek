@@ -1,6 +1,30 @@
-checkout(cart, payment) -> receipt | declined | empty_cart
+# Placing an order. Four functions, and the property that matters most --
+# releasing the reservation when the charge fails -- cannot be expressed.
+
+reserve_stock(sku, qty) -> reservation | oversold
+  !db
+  : a reservation is a hold with a TTL, not a decrement of the stock count
+  (in_stock, 1) ok
+  (in_stock, 999) oversold
+  (out_of_stock, 1) oversold
+
+charge_card(card, amount) -> charge | declined | down
+  !net
+  (valid, 1000) ok
+  (no_funds, 1000) declined
+  (unreachable, 1000) down
+  ? idempotent on the idempotency key: one order never charges twice
+
+release_reservation(reservation) -> released | already_gone
+  !db
+  held ok
+  expired already_gone
+
+place_order(cart, card) -> order | oversold | declined
   !db !net
-  (full_cart, good_card) receipt
-  (full_cart, bad_card) declined
-  (empty, good_card) empty_cart
-  ? charge and order creation must be atomic
+  : calls reserve_stock, then charge_card, then writes the order
+  (stocked, valid) ok
+  (unstocked, valid) oversold
+  (stocked, no_funds) declined
+  ? the reservation is released when the charge fails
+  ? the order row and the charge commit together or neither does

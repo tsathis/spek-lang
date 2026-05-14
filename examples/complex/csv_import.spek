@@ -1,5 +1,20 @@
-import_rows(path) -> imported | invalid_row
+# Streaming with partial failure. valid_10gb plus ? constant memory forbids
+# reading the file into a list, without any performance syntax.
+
+validate_header(path) -> header | missing_column | unreadable
+  !fs
+  well_formed ok
+  no_email_column missing_column
+  binary_blob unreadable
+
+import_rows(path, header) -> summary | aborted
   !fs !db
-  (clean_csv) imported
-  (bad_csv) invalid_row
-  ? partial imports must roll back
+  : commit in batches; one bad row must not lose the batch before it
+  (valid_10gb, header) ok
+  (half_bad_10mb, header) ok
+  (truncated, header) aborted
+  ? constant memory regardless of file size
+  ? rows already committed stay committed when a later row aborts
+
+report(summary) -> text
+  (partial) ok

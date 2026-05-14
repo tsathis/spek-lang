@@ -1,5 +1,22 @@
-transfer(from_acct, to_acct, amount) -> ok | insufficient
+# Double-entry bookkeeping. The invariant that defines it -- money is
+# conserved -- is a relation over all accounts, so points cannot pin it.
+
+debit(account, amount) -> entry | insufficient | frozen
   !db
-  (funded, dest, small) ok
-  (empty, dest, small) insufficient
-  ? double entry invariant, debits must equal credits
+  (funded, 50) ok
+  (funded, 5000) insufficient
+  (frozen_acct, 50) frozen
+
+credit(account, amount) -> entry | frozen
+  !db
+  (funded, 50) ok
+  (frozen_acct, 50) frozen
+
+transfer(src, dst, amount) -> posting | insufficient | frozen
+  !db
+  : posts one debit and one credit; never mutates a balance in place
+  (funded, empty, 50) ok
+  (funded, empty, 5000) insufficient
+  (frozen_acct, empty, 50) frozen
+  ? the debit and the credit commit atomically or neither does
+  ? the sum of all balances is unchanged by any transfer

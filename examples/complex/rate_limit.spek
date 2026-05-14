@@ -1,4 +1,14 @@
-allow(client_id, now) -> allowed | limited
-  !mem
-  (fresh_client, t1) allowed
-  (over_limit, t1) limited
+# State plus wall-clock together. Both are hatch territory.
+
+allow(key, now) -> allowed | limited
+  !mem !clock
+  (fresh_key, t0) ok
+  (exhausted_key, t0) limited
+  (exhausted_key, t0_plus_60s) allowed
+
+refill(bucket, now) -> bucket
+  !clock
+  (empty, t0_plus_60s) ok
+  (full, t0_plus_60s) ok
+  ? tokens accrue continuously, not in discrete ticks
+  ? the bucket never exceeds its burst ceiling

@@ -1,5 +1,20 @@
-deliver(event, endpoint) -> delivered | failed
-  !net
-  (valid_event, up_endpoint) delivered
-  (valid_event, down_endpoint) failed
-  ? retries with backoff on failure
+# At-least-once delivery. Every temporal property is a hatch.
+
+enqueue(endpoint, payload) -> queued | rejected
+  !db
+  (valid_url, small) ok
+  (bad_url, small) rejected
+  (valid_url, oversized) rejected
+
+attempt_delivery(delivery) -> delivered | retry | dead
+  !net !db
+  : the receiver may see the same payload twice; that is the contract
+  fresh ok
+  server_error retry
+  exhausted dead
+  ? backoff doubles from 1s, capped at 1h
+  ? a 4xx other than 429 goes straight to dead and is never retried
+
+record_result(delivery, result) -> recorded
+  !db
+  (fresh, delivered) ok
