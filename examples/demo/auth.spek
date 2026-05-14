@@ -1,6 +1,10 @@
+# The canonical example, with a real implementation beside it.
 login(email, password) -> session | wrong | locked
-  !hash
-  (known, right) session
-  (known, wrong) wrong
+  !db !hash
+  : known is a user that exists and is not locked; locked_acct is locked
+  : an unknown email and a bad password give the same outcome on purpose
+  (known, right) ok
+  (known, bad_pw) wrong
   (unknown, any) wrong
   (locked_acct, right) locked
+  ? the password check runs before the lock check, so lock state cannot leak
