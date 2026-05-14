@@ -1,3 +1,6 @@
-parse_date(text) -> date | invalid
-  (good) date
-  (bad) invalid
+# 2026-02-30 is a semantic bug a model would plausibly miss. One line pins it.
+parse_date(s) -> date | bad
+  "2026-01-15" ok
+  "15/01/2026" bad
+  "2026-02-30" bad
+  "" bad

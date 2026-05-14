@@ -1,4 +1,8 @@
-process_csv(path) -> rows | invalid
+# valid_10gb ok plus ? constant memory forbids reading the file into a list,
+# without any performance syntax.
+process_csv(path) -> report | malformed
   !fs
-  (good_file) rows
-  (bad_file) invalid
+  valid_10mb ok
+  valid_10gb ok
+  missing_header malformed
+  ? constant memory

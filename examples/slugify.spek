@@ -1,2 +1,5 @@
-slugify(text) -> slug
-  (title) slug
+# No !tags is itself information: this touches nothing.
+slugify(title) -> text
+  "Hello World" "hello-world"
+  "  a  b  " "a-b"
+  "" ""

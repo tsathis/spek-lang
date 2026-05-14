@@ -1,4 +1,9 @@
+# Two hatches on one function is a signal in itself: this needs someone
+# who knows what they are doing.
 transfer(src, dst, amount) -> ok | insufficient
   !db
-  (funded, small) ok
-  (empty, small) insufficient
+  (funded, empty, 50) ok
+  (funded, empty, 150) insufficient
+  (funded, empty, 0) insufficient
+  ? atomic
+  ? no deadlock under concurrent transfers

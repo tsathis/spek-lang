@@ -1,2 +1,6 @@
-next_run(cron, now) -> when
-  (daily, t1) when
+# The honest limit. Almost nothing but hatches: correctness here is a
+# relation, not a set of points, and spek degrades to comments.
+schedule(tasks, workers) -> assignment | infeasible
+  ? minimizes makespan
+  ? respects dependencies
+  ? deterministic for same input

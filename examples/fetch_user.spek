@@ -1,4 +1,7 @@
-fetch_user(id) -> user | not_found
+# Temporal property: examples cannot express it, so it is marked.
+fetch_user(id) -> user | missing | down
   !net
-  (existing) user
-  (missing) not_found
+  known ok
+  unknown missing
+  timeout down
+  ? retries 3x with backoff

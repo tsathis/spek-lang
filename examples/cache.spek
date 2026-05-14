@@ -1,4 +1,6 @@
-get_cached(key) -> hit | miss
+# Sequencing is expressed by naming states, not by adding syntax.
+cache.get(key) -> value | miss
   !mem
-  (present) hit
-  (absent) miss
+  after_set ok
+  never_set miss
+  after_expire miss

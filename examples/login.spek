@@ -1,5 +1,8 @@
-login(email, password) -> ok | wrong
+# (unknown, any) wrong forbids user enumeration.
+# !hash means an implementation comparing passwords with == fails the check.
+login(email, password) -> session | wrong | locked
   !db !hash
   (known, right) ok
-  (known, bad) wrong
+  (known, bad_pw) wrong
   (unknown, any) wrong
+  (locked_acct, right) locked
