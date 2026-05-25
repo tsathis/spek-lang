@@ -1,12 +1,25 @@
-name: tests
-on: [push, pull_request]
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - run: pip install pytest ruff
-      - run: pytest tests/
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: ruff check spek tests
+      - run: pytest -q
+      # The terseness gate: the language reference has to stay promptable.
+      - run: pytest -q tests/test_budget.py
+      # The loop has to work on the bundled demo, not just in unit tests.
+      - run: spek verify examples/demo/auth.spek examples/demo/auth.py
