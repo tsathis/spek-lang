@@ -13,7 +13,7 @@ from __future__ import annotations
 
 _PREFIXES: dict[str, tuple[str, ...]] = {
     "net": (
-        "requests", "httpx", "urllib", "urllib3", "http.client", "http.server",
+        "httpx", "urllib", "urllib3", "http.client", "http.server",
         "aiohttp", "socket", "ssl", "ftplib", "smtplib", "poplib", "imaplib",
         "telnetlib", "websockets", "websocket", "grpc", "boto3", "botocore",
         "paramiko", "xmlrpc", "asyncio.open_connection", "socketserver",
