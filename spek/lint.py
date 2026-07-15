@@ -29,7 +29,7 @@ from .spec_ast import Spec, SpecFile, literal_repr
 
 #: Body lines a reviewer takes in at a glance. Past this the spec gets skimmed,
 #: which defeats the point of having one.
-LINE_BUDGET = 6
+LINE_BUDGET = 5
 
 #: Notes sit outside the body budget -- charging them against it would just mean
 #: nobody writes them. They get their own, tighter cap on a simple principle:
