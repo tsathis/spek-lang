@@ -199,7 +199,7 @@ def _normalise(text: str) -> str:
 def _match_outcome(text: str, outcomes: tuple[str, ...]) -> str | None:
     """Longest outcome whose word appears in `text`; longest wins over `ok` vs `okish`."""
     needle = _normalise(text)
-    hits = [o for o in outcomes if _normalise(o) == needle]
+    hits = [o for o in outcomes if _normalise(o) and _normalise(o) in needle]
     return max(hits, key=len) if hits else None
 
 
