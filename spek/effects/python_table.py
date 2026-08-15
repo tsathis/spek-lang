@@ -108,5 +108,10 @@ def is_opaque(dotted: str) -> bool:
 
 
 def effect_for(dotted: str) -> str | None:
-    """Lookup: `requests.adapters.HTTPAdapter` -> `net`."""
-    return SYMBOL_EFFECTS.get(dotted)
+    """Longest-prefix lookup: `requests.adapters.HTTPAdapter` -> `net`."""
+    parts = dotted.split(".")
+    for stop in range(len(parts), 0, -1):
+        tag = SYMBOL_EFFECTS.get(".".join(parts[:stop]))
+        if tag is not None:
+            return tag
+    return None
