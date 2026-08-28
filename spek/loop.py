@@ -116,7 +116,7 @@ def run(
         outcome.final = Result(spec_file=None, diagnostics=parse_diags)
         return outcome
 
-    for index in range(1, max_rounds):
+    for index in range(1, max_rounds + 1):
         if not impl_path.exists():
             prompt = generation_prompt(spec_file, str(impl_path))
         elif outcome.rounds:
