@@ -33,7 +33,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         return args.handler(args)
     except FileNotFoundError as exc:
-        print(f"spek: {exc.filename}: not found", file=sys.stderr)
+        print(f"spek: {exc.filename}: no such file", file=sys.stderr)
         return USAGE
 
 
